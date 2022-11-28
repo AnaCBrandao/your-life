@@ -1,0 +1,10 @@
+{
+  "expo": {
+    "name": "your-life",
+    "slug": "your-life",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
