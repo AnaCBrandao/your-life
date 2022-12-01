@@ -2,11 +2,14 @@ import React, { useState } from "react";
 import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
-//import DefaultButton from "../../Components/Common/DefaultButton";
+import SelectHabit from "./SelectHabit";
 //import LifeStatus from "../../Components/Common/LifeStatus";
 
 export default function HabitPage({ route }) {
   const navigation = useNavigation();
+  const [habitInput, setHabitInput] = useState();
+  const [frequencyInput, setFrequencyInput] = useState();
+
   const {create, habit} = route.params;
 
   return (
@@ -28,6 +31,8 @@ export default function HabitPage({ route }) {
             <View style={styles.inputContainer}>
                 <Text style={styles.area}>{habit?.habitArea}</Text>
             </View>
+            <Text style={styles.inputText}>Hábito</Text>
+            <SelectHabit habit={habit} habitInput={setHabitInput} />
           </View>
         </View>
       </ScrollView>
