@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, Alert } fr
 import { useNavigation } from "@react-navigation/native";
 
 import SelectHabit from "./SelectHabit";
-//import LifeStatus from "../../Components/Common/LifeStatus";
+import SelectFrequency from "../../Components/HabitPage/SelectFrequency";
 
 export default function HabitPage({ route }) {
   const navigation = useNavigation();
@@ -27,12 +27,20 @@ export default function HabitPage({ route }) {
           </TouchableOpacity>
           <View style={styles.mainContent}>
             <Text style={styles.title}>Configurações de hábito</Text>
+
             <Text style={styles.inputText}>Área</Text>
             <View style={styles.inputContainer}>
                 <Text style={styles.area}>{habit?.habitArea}</Text>
             </View>
+
             <Text style={styles.inputText}>Hábito</Text>
             <SelectHabit habit={habit} habitInput={setHabitInput} />
+
+            <Text style={styles.inputText}>Frequência</Text>
+            <SelectFrequency
+              habitFrequency={habit?.habitFrequency}
+              frequencyInput={setFrequencyInput}
+            />
           </View>
         </View>
       </ScrollView>
