@@ -1,13 +1,22 @@
-import React, { useState, useEffect, useRef, } from "react";
-import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, Alert } from "react-native";
+import React, { useEffect, useRef, useState } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  ScrollView,
+  Alert,
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
-import SelectHabit from "./SelectHabit";
+import SelectHabit from "../../Components/HabitPage/SelectHabit";
 import SelectFrequency from "../../Components/HabitPage/SelectFrequency";
 import Notification from "../../Components/HabitPage/Notification";
 import TimeDatePicker from "../../Components/HabitPage/TimeDataPicker";
-import UpdateExcludeButtons from "../../Components/HabitPage/UpdateExcludeButton";
+import UpdateExcludeButtons from "../../Components/HabitPage/UpdateExcludeButtons";
 import DefaultButton from "../../Components/Common/DefaultButton";
+import HabitService from "../../Services/HabitService";
 
 export default function HabitPage({ route }) {
   const navigation = useNavigation();
@@ -17,7 +26,12 @@ export default function HabitPage({ route }) {
   const [dayNotification, setDayNotification] = useState();
   const [timeNotification, setTimeNotification] = useState();
 
-  const {create, habit} = route.params;
+  const { create, habit } = route.params;
+
+  const habitCreated = new Date();
+  const formatDate = `${habitCreated.getFullYear()}-${
+    habitCreated.getMonth() + 1
+  }-${habitCreated.getDate()}`;
 
   function handleCreateHabit() {
     if (habitInput === undefined || frequencyInput === undefined) {
@@ -40,16 +54,7 @@ export default function HabitPage({ route }) {
         "Você precisa dizer a frequência e o horário da notificação!"
       );
     } else {
-      if (notificationToggle) {
-          NotificationService.createNotification(
-          habitInput,
-          frequencyInput,
-          dayNotification,
-          timeNotification
-        );
-      }
-
-      HabitsService.createHabit({
+      HabitService.createHabit({
         habitArea: habit?.habitArea,
         habitName: habitInput,
         habitFrequency: frequencyInput,
@@ -60,7 +65,6 @@ export default function HabitPage({ route }) {
         daysWithoutChecks: 0,
         habitIsChecked: 0,
         progressBar: 1,
-        habitChecks: 0,
       }).then(() => {
         Alert.alert("Sucesso na criação do hábito!");
 
@@ -75,7 +79,7 @@ export default function HabitPage({ route }) {
     if (notificationToggle === true && !dayNotification && !timeNotification) {
       Alert.alert("Você precisa colocar a frequência e horário da notificação");
     } else {
-      HabitsService.updateHabit({
+      HabitService.updateHabit({
         habitArea: habit?.habitArea,
         habitName: habitInput,
         habitFrequency: frequencyInput,
@@ -86,17 +90,8 @@ export default function HabitPage({ route }) {
       }).then(() => {
         Alert.alert("Sucesso na atualização do hábito");
         if (!notificationToggle) {
-          NotificationService.deleteNotification(habit?.habitName);
         } else {
-          NotificationService.deleteNotification(habit?.habitName);
-          NotificationService.createNotification(
-            habitInput,
-            frequencyInput,
-            dayNotification,
-            timeNotification
-          );
         }
-
         navigation.navigate("Home", {
           updatedHabit: `Updated in ${habit?.habitArea}`,
         });
@@ -104,26 +99,24 @@ export default function HabitPage({ route }) {
     }
   }
 
-
   return (
     <View style={styles.container}>
       <ScrollView>
         <View>
-          <TouchableOpacity 
-            style={styles.backPageBtn}
-            onPress={() => navigation.goBack()}  
+          <TouchableOpacity
+            style={styles.bakcPageBtn}
+            onPress={() => navigation.goBack()}
           >
-            <Image 
-                source={require("../../assets/icons/arrowBack.png")}
-                style={styles.arrowBack} 
+            <Image
+              source={require("../../assets/icons/arrowBack.png")}
+              style={styles.arrowBack}
             />
           </TouchableOpacity>
           <View style={styles.mainContent}>
-            <Text style={styles.title}>Configurações de hábito</Text>
-
+            <Text style={styles.title}>Configurações {"\n"} de hábito</Text>
             <Text style={styles.inputText}>Área</Text>
             <View style={styles.inputContainer}>
-                <Text style={styles.area}>{habit?.habitArea}</Text>
+              <Text style={styles.area}>{habit?.habitArea}</Text>
             </View>
 
             <Text style={styles.inputText}>Hábito</Text>
@@ -170,7 +163,6 @@ export default function HabitPage({ route }) {
                 />
               </View>
             )}
-
           </View>
         </View>
       </ScrollView>
@@ -183,7 +175,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "rgba(21, 21, 21, 0.98)",
   },
-  backPageBtn: {
+  bakcPageBtn: {
     width: 40,
     height: 40,
     margin: 25,
@@ -194,20 +186,23 @@ const styles = StyleSheet.create({
   },
   mainContent: {
     width: 250,
-    alignSelf:"center",
+    alignSelf: "center",
+  },
+  configButton: {
+    alignItems: "center",
   },
   title: {
     fontWeight: "bold",
     textAlign: "center",
     color: "#7ed957",
-    fontSize: 25,
+    fontSize: 30,
   },
   inputText: {
-    marginTop: 35,
-    marginBottom: 10,
-    marginLeft: 15,
     color: "white",
     fontSize: 16,
+    marginTop: 35,
+    marginBottom: 10,
+    marginLeft: 5,
   },
   inputContainer: {
     borderWidth: 1,
