@@ -5,7 +5,7 @@
 </div>
 <div align="center">
   <p>The Your Life app is a project developed during the OneBitCode Mobile Week. Its objective is to manage tasks, which help the user to establish better and healthier habits in his life. Panda alerts the user if he is not carrying out his tasks as planned. The panda will change its mood and the little bar that indicates that it is progressing, will decrease, until it can die, in case the tasks are not fulfilled. <p>
-  <img src="https://cdn.discordapp.com/attachments/767910421025521665/1046858087572713623/digiunion-react.gif"/>
+  <img width="300px" src="https://cdn.discordapp.com/attachments/767910421025521665/1049499347554930688/Screenshot_20221205-223506_Drive.jpg"/>
 </div>
 
 ## Features
